@@ -9,6 +9,8 @@ cd $DOCKER
 docker-compose build
 docker-compose up -d
 
+docker exec -it app_searchmetrics sh -c "cd /var/www/ && composer install" -d
+
 docker exec -it app_searchmetrics sh -c "cd /var/www/ && vendor/phpunit/phpunit/phpunit tests/" -d
 
 curl http://127.0.0.1:8081/?url=https://google.de:80/hh
