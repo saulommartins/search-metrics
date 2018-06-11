@@ -16,7 +16,9 @@ class UrlServiceTest extends TestCase
      * @var \Searchmetrics\SeniorTest\Services\UrlService;
      */
     private $service;
-
+    private $urlModel;
+    private $urlRepository;
+    private $urlValidator;
 
     function setUp()
     {
@@ -35,12 +37,12 @@ class UrlServiceTest extends TestCase
      */
     public function instantiation_works() : void
     {
-        $urlModel = new Url();
-        $urlRepository = new UrlRepositoryEloquent();
-        $urlValidator = new UrlValidator();
-        self::assertInstanceOf(Url::class, $urlModel);
-        self::assertInstanceOf(UrlRepositoryEloquent::class, $urlRepository);
-        self::assertInstanceOf(UrlValidator::class, $urlValidator);
+        $this->urlModel = new Url();
+        $this->urlRepository = new UrlRepositoryEloquent();
+        $this->urlValidator = new UrlValidator();
+        self::assertInstanceOf(Url::class, $this->urlModel);
+        self::assertInstanceOf(UrlRepositoryEloquent::class, $this->urlRepository);
+        self::assertInstanceOf(UrlValidator::class, $this->urlValidator);
     }
 
 
@@ -76,6 +78,21 @@ class UrlServiceTest extends TestCase
             $expectedId,
             $result->data->code,
             \sprintf('Expected URL ID generator to return ID [%s], got [%s] instead.', $expectedId, $generatedId)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function testDeleteUrl() : void
+    {
+        $data = UrlRepositoryEloquent::findLastInserted();
+        $message = json_decode($this->service->delete((int)$data['id']));
+
+        self::assertSame(
+            "MESSAGES.DATA_REMOVED",
+            $message->result,
+            \sprintf('Expected a successfull message [%s].', $result->result)
         );
     }
 }

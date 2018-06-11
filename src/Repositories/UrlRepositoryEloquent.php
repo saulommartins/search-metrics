@@ -41,6 +41,25 @@ class UrlRepositoryEloquent extends Url
         }
         return $data;
     }
+
+    /**
+     * @return array
+     */
+    public function findLastInserted() : array
+    {
+        try
+        {
+            $result = Url::where("id",">", 0)
+                ->orderBY("id","desc");
+            $data = $result->first()->original;
+            if (is_null($data)) {
+                throw new \Exception('No records found.');
+            }
+        }catch (\Exception $e ) {
+            throw new \Exception('Error trying to retrive data.');
+        }
+        return $data;
+    }
 }
 
 
