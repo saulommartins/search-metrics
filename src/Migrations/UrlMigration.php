@@ -22,7 +22,7 @@ class UrlMigration
     {
         Capsule::schema()->create($this->table, function ($table) {
             $table->increments('id');
-            $table->string('url');
+            $table->string('url', 2048);
             $table->string('code');
             $table->timestamps();
         });
@@ -31,5 +31,10 @@ class UrlMigration
     public function hasTable()
     {
         return Capsule::schema()->hasTable($this->table);
+    }
+
+    public function down()
+    {
+        Capsule::schema()->drop($this->table);
     }
 }

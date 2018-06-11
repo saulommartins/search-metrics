@@ -6,6 +6,7 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 use Dotenv\Dotenv;
 
 class DatabaseConnection {
+    private $connection;
     public function connect() {
         $dotenv = new Dotenv(__DIR__ );
         $dotenv->load();
@@ -24,5 +25,9 @@ class DatabaseConnection {
 
         // Setup the Eloquent ORM.
         $capsule->bootEloquent();
+        $this->connection = $capsule;
+    }
+    public function disconnect() {
+        $this->connection->connection()->disconnect();
     }
 }
