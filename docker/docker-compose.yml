@@ -1,0 +1,28 @@
+version: '3.4'
+
+services:
+  nginx:
+      image: nginx:latest
+      container_name: nginx_searchmetrics
+      ports:
+          - "8081:80"
+      networks:
+          - frontend
+      volumes:
+          - ../:/var/www/
+          - ./nginx/conf:/etc/nginx/conf.d
+          - ./nginx/logs:/var/log/nginx/
+      depends_on:
+          - app
+  app:
+      build: ./php
+      container_name: app_searchmetrics
+      networks:
+          - backend
+          - frontend
+      volumes:
+          - ../:/var/www/
+networks:
+    backend:
+    frontend:
+
