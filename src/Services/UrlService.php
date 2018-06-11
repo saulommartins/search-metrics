@@ -81,7 +81,7 @@ class UrlService
         try {
             $obj = $this->repository->delete($id);
 
-            return $this->response(['result' => 'MESSAGES.DATA_REMOVED', 'data' => ['id' => $obj->id]],200);
+            return $this->response(['result' => 'MESSAGES.DATA_REMOVED', 'data' => ['id' => $id]]);
 
         } catch (ValidatorException $e) {
             return $this->response($e->getMessageBag(),501);
@@ -102,7 +102,7 @@ class UrlService
         try {
             $this->validator->passesOrFailCreate();
             $obj = $this->repository->create($data);
-            return $this->response(['result' => 'MESSAGES.DATA_SAVED', 'data' => ['id' => $obj->id, 'code' => $obj->code]],200);
+            return $this->response(['result' => 'MESSAGES.DATA_SAVED', 'data' => ['id' => $obj->id, 'code' => $obj->code]]);
 
         } catch (ValidatorException $e) {
             return $this->response($e->getMessageBag(),501);
@@ -122,7 +122,7 @@ class UrlService
         try {
             $this->validator->with($data)->passesOrFailUpdate();
             $obj = $this->repository->update($data, $id);
-            return $this->response(['result' => 'MESSAGES.DATA_SAVED', 'data' => ['id' => $obj->id, 'code' => $obj->code]],200);
+            return $this->response(['result' => 'MESSAGES.DATA_SAVED', 'data' => ['id' => $obj->id, 'code' => $obj->code]]);
         } catch (ValidatorException $e) {
             return $this->response($e->getMessageBag(),501);
         }
@@ -132,7 +132,7 @@ class UrlService
      * @param string $data
      * @return string
      */
-    private function response (string $data) :string
+    private function response (array $data) :string
     {
         return json_encode($data);
     }
