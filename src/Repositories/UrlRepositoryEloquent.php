@@ -29,8 +29,17 @@ class UrlRepositoryEloquent extends Url
         if ($url === '') {
             throw new \InvalidArgumentException('URL string must not be empty!');
         }
-        $result = Url::where('url','=',$url);
-        return $result->first()->original;
+        try
+        {
+            $result = Url::where('url', '=', $url);
+            $data = $result->first()->original;
+            if (is_null($data)) {
+                throw new \Exception('No records found.');
+            }
+        }catch (\Exception $e ) {
+            throw new \Exception('Error trying to retrive data.');
+        }
+        return $data;
     }
 }
 
