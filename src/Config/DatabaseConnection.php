@@ -8,7 +8,7 @@ use Dotenv\Dotenv;
 class DatabaseConnection {
     private $connection;
     public function connect() {
-        $dotenv = new Dotenv(__DIR__ );
+        $dotenv = new Dotenv(__DIR__, "config.env");
         $dotenv->load();
 
         $capsule = new Capsule;
