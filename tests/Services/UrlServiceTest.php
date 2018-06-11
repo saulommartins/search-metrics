@@ -56,8 +56,13 @@ class UrlServiceTest extends TestCase
         $file = \fopen(__DIR__ . '/../Resources/url_ids.txt', 'r');
 
         if (false !== $file) {
+            $i=1;
             while (($line = \fgets($file)) !== false) {
+                $i++;
                 $providers[] = \explode("\t|\t", \trim($line));
+                if ($i>=10){
+                    break;
+                }
             }
 
             \fclose($file);
