@@ -25,3 +25,16 @@ results of others, and to protect everyone's privacy.
 - **[o]** Provide a runnable environment of some kind (VM, Docker) in which the tests are still running successfully
 - **[o]** Extend the environment to be able to run an integration test with your implementation against it and write that integration test
 - **[.]** Extend the environment further with a small HTTP service allowing consumers to look up the URL ID for a URL they provide
+
+
+
+### Steps to test
+
+- After installing Docker and Docker-Compose.
+- Run the file integrationTest.sh, in which will raise the environment run the tests and trigger the default api rest.
+- After testing, you must run stopDocker.sh to shut down the docker completely.
+
+Thank you
+
+Best Regards
+- Saulo Mendes Martins
