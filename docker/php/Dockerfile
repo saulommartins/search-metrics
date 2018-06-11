@@ -12,7 +12,8 @@ apt-get install -yq \
     libgmp-dev && \
 apt-get install -y libpq-dev && \
 docker-php-ext-install pdo \
-    pdo_pgsql \
+    pdo_mysql \
+    mysqli \
     gd \
     mbstring \
     mcrypt \
