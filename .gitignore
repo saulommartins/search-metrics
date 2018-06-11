@@ -2,3 +2,4 @@
 docker/nginx/logs/
 src/config/*env
 docker/mysql/data/
+vendor

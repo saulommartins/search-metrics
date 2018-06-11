@@ -29,8 +29,9 @@ class UrlServiceTest extends TestCase
         $this->databaseConnect  = new DatabaseConnection();
         $this->databaseConnect->connect();
         $migration = new UrlMigration();
-        $migration->down();
-        $migration->create();
+        if (!$migration->hasTable()) {
+            $migration->create();
+        }
     }
 
     /**
