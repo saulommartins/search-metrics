@@ -9,6 +9,7 @@ interface UrlIdGenerator
     public const PROTOCOL_DIVIDER = '://';
     public const PROTOCOL_HTTP = 'http://';
     public const PROTOCOL_HTTPS = 'https://';
+    public const PROTOCOL_FTP = 'ftp://';
 
     /**
      * Generates a long integer ID from an URL.
