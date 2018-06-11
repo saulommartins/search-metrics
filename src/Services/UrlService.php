@@ -8,6 +8,10 @@ use Searchmetrics\SeniorTest\Repositories\UrlRepositoryEloquent as UrlRepository
 use Searchmetrics\SeniorTest\Validators\UrlValidator;
 use Carbon\Carbon;
 
+/**
+ * Class UrlService
+ * @package Searchmetrics\SeniorTest\Services
+ */
 class UrlService
 {
     /**
@@ -43,7 +47,10 @@ class UrlService
         $this->repository = $repository;
     }
 
-    private function setValidator( UrlValidator $validator)
+    /**
+     * @param UrlValidator $validator
+     */
+    private function setValidator(UrlValidator $validator)
     {
         $this->validator = $validator;
     }
@@ -63,7 +70,13 @@ class UrlService
     {
         return $this->validator;
     }
-    public function delete($id)
+
+    /**
+     * Delete register on database.
+     * @param int $id
+     * @return string
+     */
+    public function delete(int $id) : string
     {
         try {
             $obj = $this->repository->delete($id);
@@ -76,7 +89,12 @@ class UrlService
         }
     }
 
-    public function create(array $data)
+    /**
+     * Insert register on database.
+     * @param array $data
+     * @return string
+     */
+    public function create(array $data) : string
     {
         $data['created_at'] = Carbon::now();
         $data['updated_at'] = Carbon::now();
@@ -85,7 +103,7 @@ class UrlService
             $this->validator->passesOrFailCreate();
             $obj = $this->repository->create($data);
             // dd($post);
-            return $this->response(['result' => 'MESSAGES.DATA_SAVED', 'data' => ['id' => $obj->id]],200);
+            return $this->response(['result' => 'MESSAGES.DATA_SAVED', 'data' => ['id' => $obj->id, 'code' => $obj->code]],200);
 
         } catch (ValidatorException $e) {
             return $this->response($e->getMessageBag(),501);
@@ -93,7 +111,13 @@ class UrlService
         }
     }
 
-    public function update(array $data, $id)
+    /**
+     * Update register on database
+     * @param array $data
+     * @param int $id
+     * @return string
+     */
+    public function update(array $data, int $id) : string
     {
         $data['updated_at'] = Carbon::now();
         try {
@@ -101,10 +125,18 @@ class UrlService
             // return $this->response($this->repository->update($data, $id),501);
             $obj = $this->repository->update($data, $id);
             // return $this->response('MESSAGES.DATA_SAVED',200);
-            return $this->response(['result' => 'MESSAGES.DATA_SAVED', 'data' => ['id' => $obj->id]],200);
+            return $this->response(['result' => 'MESSAGES.DATA_SAVED', 'data' => ['id' => $obj->id, 'code' => $obj->code]],200);
         } catch (ValidatorException $e) {
             return $this->response($e->getMessageBag(),501);
         }
     }
 
+    /**
+     * @param string $data
+     * @return string
+     */
+    private function response (string $data) :string
+    {
+        return json_encode($data);
+    }
 }

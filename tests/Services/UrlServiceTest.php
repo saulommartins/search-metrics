@@ -1,9 +1,10 @@
 <?php declare(strict_types = 1);
-
 namespace Searchmetrics\SeniorTest\Tests\Services;
 
 use PHPUnit\Framework\TestCase;
+use Searchmetrics\SeniorTest\Config\DatabaseConnection;
 use Searchmetrics\SeniorTest\Entities\Url;
+use Searchmetrics\SeniorTest\Migrations\UrlMigration;
 use Searchmetrics\SeniorTest\Repositories\UrlRepositoryEloquent;
 use Searchmetrics\SeniorTest\Services\UrlService;
 use Searchmetrics\SeniorTest\Validators\UrlValidator;
@@ -21,8 +22,12 @@ class UrlServiceTest extends TestCase
     {
         parent::setUp();
         $this->service = new UrlService(new UrlRepositoryEloquent(), new UrlValidator());
-
-        $this->service = $this->createMock(UrlService::class);
+        $databaseConnect  = new DatabaseConnection();
+        $databaseConnect->connect();
+        $migration = new UrlMigration();
+        if (!$migration->hasTable()) {
+            $migration->create();
+        }
     }
 
     /**
@@ -64,19 +69,12 @@ class UrlServiceTest extends TestCase
      */
     public function testCreateUrl(string $url, $expectedId) : void
     {
-        $this->service->method('create')
-            ->will($this->returnValue([
-                'url' => $url,
-                'code' => $expectedId
-            ])
-        );
 
         $data['url'] = $url;
-        $result = $this->service->create($data);
-
+        $result = json_decode($this->service->create($data));
         self::assertSame(
             $expectedId,
-            $result['code'],
+            $result->data->code,
             \sprintf('Expected URL ID generator to return ID [%s], got [%s] instead.', $expectedId, $generatedId)
         );
     }
