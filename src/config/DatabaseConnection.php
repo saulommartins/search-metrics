@@ -7,16 +7,16 @@ use Dotenv\Dotenv;
 
 class DatabaseConnection {
     public function connect() {
-        $dotenv = new Dotenv(__DIR__ . '../Config/config.env');
+        $dotenv = new Dotenv(__DIR__ );
+        $dotenv->load();
 
         $capsule = new Capsule;
-
         $capsule->addConnection([
-            "driver"   => $dotenv->required("DB_CONNECTION"),
-            "host"     => $dotenv->required("DB_HOST"),
-            "database" => $dotenv->required("DB_DATABASE"),
-            "username" => $dotenv->required("DB_USERNAME"),
-            "password" => $dotenv->required("DB_PASSWORD"),
+            "driver"   => getenv('DB_CONNECTION'),
+            "host"     => getenv('DB_HOST'),
+            "database" => getenv('DB_DATABASE'),
+            "username" => getenv('DB_USERNAME'),
+            "password" => getenv('DB_PASSWORD'),
         ]);
 
         //Make this Capsule instance available globally.
